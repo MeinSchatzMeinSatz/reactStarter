@@ -1,0 +1,59 @@
+@font-face {
+    font-family: "GowunBatang-Regular";
+    src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff")
+        format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background: url("./img/함부르크.jpeg");
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.weather-app_box {
+    font-family: "GowunBatang-Regular";
+    background-color: rgba(256, 256, 256, 0.5);
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 300px;
+    height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.weather-app_box h1 {
+    font-size: 30px;
+}
+
+.weather-app_box p {
+    font-size: 18px;
+}
+
+.btn_box {
+    background-color: rgba(256, 256, 256, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+
+    display: flex;
+    gap: 3px;
+}
+
+.btn {
+    background-color: white;
+    border-radius: 3px;
+    border: none;
+}
