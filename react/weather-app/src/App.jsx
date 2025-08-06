@@ -15,16 +15,19 @@ import { ClipLoader } from "react-spinners";
 
 function App() {
     const [weather, setWeather] = useState(null);
-    const [city, setCity] = useState("");
+    const [city, setCity] = useState("seoul");
     const [loading, setloading] = useState(false);
 
-    const cities = ["melbourne", "berlin", "tokyo", "busan"];
+    const cities = ["porto", "berlin", "tokyo", "busan"];
 
     const getCurrentLocation = () => {
         console.log("현재 위치");
         navigator.geolocation.getCurrentPosition((position) => {
             let lat = position.coords.latitude;
             let lon = position.coords.longitude;
+
+            console.log(lat);
+            console.log(lon);
             getWeatherByCurrentLocation(lat, lon);
         });
     };
@@ -36,7 +39,8 @@ function App() {
         let response = await fetch(url);
         let data = await response.json();
         setWeather(data);
-        setloading(true);
+        console.log("weather 값", weather);
+        setloading(false);
     };
 
     const getWeatherByCity = async () => {
@@ -58,6 +62,7 @@ function App() {
         }
     }, [city]);
 
+    console.log("weather값", weather);
     return (
         <>
             {loading ? (
@@ -72,7 +77,11 @@ function App() {
             ) : (
                 <div className="content-box">
                     <WeatherApp weather={weather} />
-                    <OptionBox cities={cities} setCity={setCity} />
+                    <OptionBox
+                        cities={cities}
+                        setCity={setCity}
+                        getCurrentLocation={getCurrentLocation}
+                    />
                 </div>
             )}
         </>
