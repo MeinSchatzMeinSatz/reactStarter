@@ -1,26 +1,24 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 import "./component/weather-app.jsx";
 import WeatherApp from "./component/weather-app.jsx";
 import OptionBox from "./component/option-box.jsx";
-
 import { ClipLoader } from "react-spinners";
 
 // 1. 앱이 실행되자마자 현재 위치 기반의 날씨가 보인다.
 // 2. 날씨 정보에는 도시, 섭씨, 화씨, 날씨 상태 정보가 들어간다.
-// 3. 5개의 버튼이 있다.(현재 위치, 4개는 다른 도시)
-// 4. 도시 버튼을 클릭할때마다 도시별 날씨가 나온다.
+// 3. 5개의 버튼이 있다. (현재 위치, 4개는 다른 도시)
+// 4. 도시 버튼을 클릭할 때마다 도시별 날씨가 나온다.
 // 5. 현재 위치 버튼을 누르면 다시 현재 위치 기반의 날씨가 나온다.
 // 6. 데이터를 들고오는 동안, 로딩 스피너가 돈다.
 
 function App() {
     const [weather, setWeather] = useState(null);
     const [city, setCity] = useState("seoul");
-    const [loading, setloading] = useState(false);
+    const [loading, setLoding] = useState(false);
     const [img, setImg] = useState("");
 
     const cities = ["porto", "berlin", "tokyo", "busan"];
-    const imgs = ["porto.JPG", "berlin.JPG", "tokyo.jpg", "hamburg.jpeg"];
+    const imgs = ["포트로.jpg", "베를린.jpg", "도쿄.jpg", "함부르크.jpeg"];
 
     const getCurrentLocation = () => {
         console.log("현재 위치");
@@ -41,7 +39,6 @@ function App() {
         let response = await fetch(url);
         let data = await response.json();
         setWeather(data);
-        console.log("weather 값", weather);
         setloading(false);
     };
 
@@ -50,12 +47,11 @@ function App() {
         setloading(true);
         let response = await fetch(url);
         let data = await response.json();
-        console.log("Data", data);
         setWeather(data);
         setloading(false);
     };
 
-    // 앱이 실행되자 마자.
+    // 앱이 실행되자 마자
     useEffect(() => {
         if (city == "") {
             getCurrentLocation();
@@ -64,19 +60,14 @@ function App() {
         }
     }, [city]);
 
-    console.log("weather값", weather);
     return (
         <>
             {loading ? (
                 <div
                     className="content-box"
                     style={{
-                        backgroundImage: img
-                            ? `url(./img/${img})`
-                            : "url('/img/seoul.jpeg')",
+                        background: setImg ? `url(${setImg})` : "none",
                         backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
                     }}
                 >
                     <ClipLoader
@@ -90,12 +81,8 @@ function App() {
                 <div
                     className="content-box"
                     style={{
-                        backgroundImage: img
-                            ? `url(./img/${img})`
-                            : "url('./img/seoul.jpeg')",
+                        background: setImg ? `url(${setImg})` : "none",
                         backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
                     }}
                 >
                     <WeatherApp weather={weather} />

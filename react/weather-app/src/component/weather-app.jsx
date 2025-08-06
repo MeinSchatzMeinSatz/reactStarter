@@ -9,7 +9,8 @@ const WeatherApp = ({ weather }) => {
                 <div className="temperature">
                     <p>
                         {weather && weather?.main?.temp}°C /{" "}
-                        {(weather && (weather.main.temp * 9) / 5) + 32}
+                        {weather &&
+                            Math.floor((weather.main.temp * 9) / 5) + 32}
                         °F
                     </p>
                 </div>
