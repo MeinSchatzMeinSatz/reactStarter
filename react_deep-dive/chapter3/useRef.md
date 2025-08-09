@@ -62,3 +62,49 @@ useRef는 최초에 넘겨받은 기본값을 가지고 있다.
 한 가지 명심할 것은 useRef의 최초 기본값은 return 문에 정의해 둔 DOM이 아니고 useRef()로 넘겨받은 인수라는 것이다. useRef가 선언된 당시에는 아직 컴포넌트가 렌더링되기 전이라 return으로 컴포넌트의 DOM이 반환되기 전이므로 undefined다.
 
 useRef를 사용할 수 있는 유용한 경우는 렌더링을 발생시키지 않고 원하는 상태값을 저장할 수 있다는 특징을 활용해 useEffect의 이전 값을 저장하는 usePrevious() 같은 훅을 구현할 때다. 다음 코드를 보자.
+
+```javascript
+function usePrevious(value) {
+    const ref = useRef()
+    useEffect(() => => {
+        ref.current = value
+    }, [value]) // value가 변경되면 그 값을 ref에 넣어둔다.
+    return ref.current
+}
+
+function SomeComponent() {
+    const [counter, setCounter] = useState(0)
+    const previousCounter = usePrevious(counter)
+
+    function handleClick() {
+        setCounter((prev) => prev + 1)
+    }
+
+    // 0
+    // 1, 0
+    // 2, 1
+    // 3, 2
+    return (
+        <button onClick={handleClick}>
+        {counter} {previousCounter}
+        </button>
+    )
+}
+```
+
+이렇게 개발자가 원하는 시점의 값을 렌더링에 영향을 미치지 않고 보관해 두고 싶다면 useRef를 사용하는 것이 좋다.
+
+그렇다면 useRef는 어떻게 구현돼 있을까? 리액트에서의 구현은 다르지만 Preact에서 구현에 대한 힌트를 얻을 수 있다. 의외로 구현은 매우 간단하다.
+
+```javascript
+exprot function useRef(initialValue) {
+    currentHook = 5
+    return useMemo(() => ({current: initialValue}) [])
+}
+```
+
+-   값이 변경돼도 렌더링되면 안 된다는 점.
+-   실제 값은 {current: value}와 같은 객체 형태로 있다는 점
+    을 떠올려보자.
+
+렌더링에 영향을 미치면 안되기 때문에 useMemo에 의도적으로 선언해 뒀고, 이는 각 렌더링마다 동일한 객체를 가리키는 결과를 낳을 것이다. 자바스크립트의 특징, 객체의 값을 변경해도 객체를 가리키는 주소가 변경되지 않는다는 것을 떠올리면 useMemo로 useRef를 구현할 수 있다.
